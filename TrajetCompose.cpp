@@ -32,11 +32,9 @@ void TrajetCompose::Afficher()
 {
 	cout << "Affichage TC";
 		cout << endl << "----------------------------\r\n";
-		for(int i=0; i <  this->tabTC->getCardActu(); i++)
-		{
-			this->tabTC[i].Afficher();
 
-		}
+		this->tabTC->Afficher();
+
 
 		cout << "----------------------------\r\n";
 }
@@ -55,7 +53,7 @@ void TrajetCompose::Ajouter(TrajetCompose * monTraj)
 	TrajetCompose * monTCCopie = new TrajetCompose();
 
 	monTCCopie->CopieTraj(monTraj);
-	
+
 
 	tabTC->Ajouter(monTCCopie);
 }
@@ -199,11 +197,11 @@ void TrajetCompose::testType()
 
 void TrajetCompose::SauvegarderTraj(ofstream& fichier)
 {
-	string str;  
-	 
+	string str;
+
 	  if(fichier)  // si l'ouverture a fonctionné
         {
-			
+
 			 str = "TC\r\n";
 			 fichier << str;
 
@@ -211,12 +209,10 @@ void TrajetCompose::SauvegarderTraj(ofstream& fichier)
 			{
 				tabTC->getCaseTab(i)->SauvegarderTraj(fichier);
 			}
-			
 
-			 str = "/TC;\r\n";
-					 
+
+			 str = "/TC\r\n";
+
 			 fichier << str;
 		}
 }
-
-

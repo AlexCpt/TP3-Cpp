@@ -112,7 +112,6 @@ void Catalogue::SaisieSimple()
 			}
 
 			Ajouter(monTrajComp);
-			cout <<"coucou7\n";
 			delete monTrajComp;
 
 			delete [] villeArriveeTamp;
@@ -333,41 +332,69 @@ void Catalogue::Lecture()
         {
            while(getline(fichier, ligne))  // tant que l'on peut mettre la ligne dans "contenu"
 
-			{
-				cout << "ligne" <<endl;
-				cout << ligne <<endl;
+					 {
+							cout << "ligne" <<endl;
+							cout << ligne <<endl;
+							cout << ligne.at(1) <<endl;
 
-				if(ligne.at(1) == 'S')// Si c'est un TS
-				{
-					cout << "if" <<endl;
-					ligneSplit = split(ligne);
+							if(ligne.at(1) == 'S')// Si c'est un TS
+							{
+								ligneSplit = split(ligne);
 
-					//Rectification du moyenTransp
-					ligneSplit[3].pop_back(); // on retire le dernier carac
-					ligneSplit[3].pop_back(); // on retire le dernier carac
+								//Rectification du moyenTransp
+								ligneSplit[3].pop_back(); // on retire le dernier carac
+
+								TrajetSimple * monTS = new TrajetSimple(ligneSplit[1].c_str(),ligneSplit[2].c_str(),ligneSplit[3].c_str());
+
+								Ajouter(monTS);
+
+								delete monTS;
+							}
+
+			        else if(ligne.at(1) == 'C')// Si c'est un TC
+			        {
+
+// PROB ICI
+									TrajetCompose * monTC = new TrajetCompose();
+
+										while(ligne.compare("TC/"))
+										{
+											getline(fichier, ligne);
+
+											ligneSplit = split(ligne);
+
+											//Rectification du moyenTransp
+											ligneSplit[3].pop_back(); // on retire le dernier carac
+
+											TrajetSimple * monTS = new TrajetSimple(ligneSplit[1].c_str(),ligneSplit[2].c_str(),ligneSplit[3].c_str());
+
+											monTC->Ajouter(monTS);
+
+											delete monTS;
+										}
+
+										Ajouter(monTC);
+
+										delete monTC;
 
 
-					TrajetSimple * monTS = new TrajetSimple(ligneSplit[1].c_str(),ligneSplit[2].c_str(),ligneSplit[3].c_str());
+							}
 
-					tabCata->Ajouter(monTS);
+							else
+							{
+								cerr << "ERREUR : fichier corrompu" << endl;
+							}
 
-					delete monTS;
-				}
-                else
-                {
-
-								}
-
-			}
+					}
 
             fichier.close();  // on referme le fichier
 
         }
 
         else
-		{
-			cerr << "Erreur à l'ouverture !" << endl;
-		}
+				{
+					cerr << "Erreur à l'ouverture !" << endl;
+				}
 }
 
 vector<string> Catalogue::split(string s)

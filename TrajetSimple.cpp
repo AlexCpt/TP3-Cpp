@@ -201,7 +201,6 @@ void TrajetSimple::testType()
 			 str += villeArr;
 			 str += " ";
 			 str += getMT();
-			 str += ";";
 			 str += "\r\n";
 
 			 fichier << str;
