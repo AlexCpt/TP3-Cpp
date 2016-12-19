@@ -50,22 +50,22 @@ void Catalogue::SaisieSimple()
 				cin >>  moyTrans;
 
 				TrajetSimple *leTrajet = new TrajetSimple(villeDep,villeArr,moyTrans);
-				
+
 
 				if(nbEscales==0)
 				{
 					Ajouter(leTrajet);
-					
+
 					delete [] villeArr;
 					delete [] villeDep;
 					delete [] moyTrans;
 					delete leTrajet;
 				}
-				
+
 				else
 				{
 					TrajetCompose *monTrajComp = new TrajetCompose();
-					monTrajComp->Ajouter(leTrajet); 
+					monTrajComp->Ajouter(leTrajet);
 
 				//COPIE VILLE ARR -> DEP
 				char * villeArriveeTamp = new char[20];
@@ -77,9 +77,9 @@ void Catalogue::SaisieSimple()
 				delete [] villeArr;
 				delete [] villeDep;
 				delete [] moyTrans;
-				
+
 				delete leTrajet;
-				
+
 
 			for(int i = 0; i<nbEscales; i++)
 			{
@@ -95,11 +95,11 @@ void Catalogue::SaisieSimple()
 
 				leTrajet = new TrajetSimple(villeArriveeTamp,villeArr,moyTrans);
 
-				monTrajComp->Ajouter(leTrajet); 
-				
+				monTrajComp->Ajouter(leTrajet);
+
 				delete [] villeArriveeTamp;
 				delete leTrajet;
-				
+
 				villeArriveeTamp = new char[20];
 				for(unsigned int i=0; i<strlen(villeArr); i++)
 				{
@@ -110,16 +110,16 @@ void Catalogue::SaisieSimple()
 
 
 			}
-			
+
 			Ajouter(monTrajComp);
 			cout <<"coucou7\n";
 			delete monTrajComp;
-			
+
 			delete [] villeArriveeTamp;
 		}
 		}
-		
-		
+
+
 		else
 		{
 			cout << ("Mauvaise saisie\r\n");
@@ -159,7 +159,7 @@ void Catalogue::RechercheSimple()
 	char** ptTabVDVA = SaisieParamRecherche();
 
 	tabCata->recherche(ptTabVDVA[0], ptTabVDVA[1]); // VD VA
-	
+
 	for(unsigned int i = 0; i<2; i++)
 	{
 		delete [] ptTabVDVA[i];
@@ -174,7 +174,7 @@ Tableau * Catalogue::RechercheAll(char * villeDep)
 	Tableau * tabDepuisVD; // Tableau De Tous Les "trajets" partant de la ville de départ
 
 	tabDepuisVD = tabCata->getTrajVilleDep(villeDep);  //affectation
-	
+
 	TrajetCompose * monTC;
 	TrajetSimple * monTS;
 
@@ -192,28 +192,28 @@ Tableau * Catalogue::RechercheAll(char * villeDep)
 			tabDepuisVD->Ajouter(monTC);
 
 			delete tabDepuisVD->getCaseTab(i);
-			
+
 			tabDepuisVD->supprimer(i); // On supprime le TS associé
-			
-			
-			
+
+
+
 			delete monTC;
 			delete monTS;
 		}
 	}
 
-	return tabDepuisVD; 
+	return tabDepuisVD;
 }
 
 //TROUVE ET AFFICHE TOUTES LES COMPOSITIONS DE TRAJETS qui vont d'une VD à VA
 //---------------------------------------------------------------------------
-void Catalogue::RechercheComplexe() 
+void Catalogue::RechercheComplexe()
 {
 	char** ptTabVilleDepVilleArr = SaisieParamRecherche();
 
 	bool continuer = true;
 	int compteurTabSuivant;
-	
+
 	// on cherche touts les trajs depuis Dep -> monTab
 	Tableau * monTab = RechercheAll(ptTabVilleDepVilleArr[0]);
 	Tableau * monTabTourSuivant;
@@ -221,7 +221,7 @@ void Catalogue::RechercheComplexe()
 
 	while(continuer == true)
 	{
-		
+
 		 //Stocke les trajets pour le tour suivant
 		 monTabTourSuivant= new Tableau(0);
 		 compteurTabSuivant = 0;
@@ -231,7 +231,7 @@ void Catalogue::RechercheComplexe()
 			//Pour chaque TC !!
 
 			//Si on est arrivé on affiche le Trajet
-			if(strcmp(monTab->getCaseTab(i)->getVA(),ptTabVilleDepVilleArr[1]) == 0 ) 
+			if(strcmp(monTab->getCaseTab(i)->getVA(),ptTabVilleDepVilleArr[1]) == 0 )
 			{
 				monTab->getCaseTab(i)->Afficher();
 				delete monTab->getCaseTab(i);
@@ -257,20 +257,20 @@ void Catalogue::RechercheComplexe()
 			delete tabPoten;
 		}
 
-		
+
 		//copie de monTabTourSuivant dans monTab
 
 		delete monTab; // [] ou pas [] ? Normalement il faut les mettre je crois, sinon ça ne delete que la case pointée et pas toutes les cases
 
-		monTab = new Tableau(); 
+		monTab = new Tableau();
 
 		int m;
 		for(m=0; m<monTabTourSuivant->getCardActu(); m++)
 		{
 			monTab->Ajouter(monTabTourSuivant->getCaseTab(m));
 		}
-		
-		delete monTabTourSuivant; 
+
+		delete monTabTourSuivant;
 
 		if (monTab->estVide() == true)
 		{
@@ -278,13 +278,13 @@ void Catalogue::RechercheComplexe()
 			delete monTab;
 		}
 	}
-	
+
 	for(unsigned int i = 0; i<2; i++)
 	{
 		delete [] ptTabVilleDepVilleArr[i];
 	}
-	delete [] ptTabVilleDepVilleArr; 
-}	
+	delete [] ptTabVilleDepVilleArr;
+}
 
 char** Catalogue::SaisieParamRecherche()
 {
@@ -306,17 +306,17 @@ char** Catalogue::SaisieParamRecherche()
 void Catalogue::Sauvegarder()
 {
 	ofstream fichier(NOM_FICHIER, ios::out | ios::trunc);  // on ouvre en écriture
- 
+
         if(fichier)  // si l'ouverture a fonctionné
         {
-             
-             
+
+
              for(int i = 0; i < tabCata->getCardActu(); i++)
              {
-				
+
 				tabCata->getCaseTab(i)->SauvegarderTraj(fichier);
 			 }
- 
+
              fichier.close();
         }
         else
@@ -338,27 +338,26 @@ void Catalogue::Lecture()
 			{
 				cout << "ligne" <<endl;
 				cout << ligne <<endl;
-				
+
 				if(ligne.at(1) == 'S')// Si c'est un TS
 				{
 					cout << "if" <<endl;
 					ligneSplit = split(ligne);
-					
-					
-					
+
+					//Rectification du moyenTransp
+					ligneSplit[3].pop_back(); // on retire le dernier carac
+
+
 					TrajetSimple * monTS = new TrajetSimple(ligneSplit[1].c_str(),ligneSplit[2].c_str(),ligneSplit[3].c_str());
-					
+
 					tabCata->Ajouter(monTS);
-					
+
 					delete monTS;
-					
-					
-					
 				}
                 else
                 {
-						
-				}
+
+								}
 
 			}
 
@@ -366,7 +365,7 @@ void Catalogue::Lecture()
 
         }
 
-        else 
+        else
 		{
 			cerr << "Erreur à l'ouverture !" << endl;
 		}
@@ -377,46 +376,18 @@ vector<string> Catalogue::split(string s)
 	string delimiteur = " ";
 	int pos = 0;
 	int pos1 = 0;
-	
+
 	vector<string> sSplit;
-	int tampPos=0;
-	
+
 	for(int i =0; i < s.length() ; i++)
 	{
 		// SUBSTRING( int posInitiale, LONGUEUR);
-		
-		
-		cout << s.find(delimiteur, 0) << " " << s.find(delimiteur, 3) << " " << s.find(delimiteur, 11) <<endl;
-		
+
 		pos1 = s.find(delimiteur, pos);
-		sSplit.push_back(s.substr(pos, pos1));
-		cout << "0 "<< sSplit[0] <<endl;
-		
+		sSplit.push_back(s.substr(pos, pos1-pos));
 		pos = pos1+1;
-		pos1 = s.find(delimiteur, pos);
-		sSplit.push_back(s.substr(pos, pos1-2));
-		cout << "1 "<< sSplit[1] <<endl;
-		
-		pos = pos1+1;
-		pos1 = s.find(delimiteur, pos);
-		sSplit.push_back(s.substr(pos, pos1-2));
-		cout << "2 "<< sSplit[2] <<endl;
-		
-		pos = pos1+1;
-		pos1 = s.find(delimiteur, pos);
-		sSplit.push_back(s.substr(pos, pos1-2));
-		cout<< "3 " << sSplit[3] <<endl;
-		
-		
-		
-		/*pos = s.find(delimiteur, tampPos);
-		
-		//pos1 = s.find(delimiteur, pos1+1);
-		sSplit.push_back(s.substr(tampPos, pos-1));
-		cout << i << " "<< sSplit[i] << " pos = " << pos << " pos1 = " << pos1<<endl;
-		tampPos = pos+1;*/
+
 	}
-	//sSplit.push_back("coucou");
-	
+
 	return sSplit;
 }

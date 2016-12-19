@@ -58,8 +58,8 @@ TrajetSimple::~TrajetSimple()
 	delete [] villeDep;
 	delete [] villeArr;
 	delete [] moyenTransp;
-	
-	
+
+
 }
 
 //Affiche les infos du TS
@@ -83,7 +83,7 @@ void TrajetSimple::CopieTraj(TrajetSimple * const trajACop)
 	strcpy(villeDep, trajACop->villeDep);
 	strcpy(villeArr, trajACop->villeArr);
 	strcpy(moyenTransp, trajACop->moyenTransp);
-	
+
 	//cout << "copieTraj TS" <<endl;
 
 }
@@ -102,7 +102,7 @@ bool TrajetSimple::rechercheTraj(char* VD, char* VA)
 				OK = false;
 			}
 		}
-	} 
+	}
 
 	else
 	{
@@ -179,7 +179,7 @@ void TrajetSimple::CopieTraj(Trajets * const trajACop)
 	strcpy(villeDep, trajACop->getVD());
 	strcpy(villeArr, trajACop->getVA());
 	strcpy(moyenTransp, trajACop->getMT());
-	
+
 	//cout << "copieTraj TS \n";
 }
 
@@ -190,11 +190,11 @@ void TrajetSimple::testType()
 
  void TrajetSimple::SauvegarderTraj(ofstream& fichier)
  {
-	 string str;  
-	 
+	 string str;
+
 	  if(fichier)  // si l'ouverture a fonctionné
         {
-			
+
 			 str = "TS ";
 			 str += villeDep;
 			 str += " ";
@@ -203,7 +203,7 @@ void TrajetSimple::testType()
 			 str += getMT();
 			 str += ";";
 			 str += "\r\n";
-					 
+
 			 fichier << str;
 		}
  }
