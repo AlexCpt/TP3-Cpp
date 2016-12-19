@@ -309,20 +309,18 @@ void Catalogue::Sauvegarder()
 
         if(fichier)  // si l'ouverture a fonctionné
         {
-
-
              for(int i = 0; i < tabCata->getCardActu(); i++)
              {
+							 tabCata->getCaseTab(i)->SauvegarderTraj(fichier);
+			 			 }
 
-				tabCata->getCaseTab(i)->SauvegarderTraj(fichier);
-			 }
-
-             fichier.close();
+            fichier.close();
         }
         else
         {
             cerr << "Impossible d'ouvrir le fichier !" << endl;
-		}
+						cerr << "Sauvegarde échouée" << endl;
+				}
 }
 
 void Catalogue::Lecture()
@@ -345,6 +343,7 @@ void Catalogue::Lecture()
 					ligneSplit = split(ligne);
 
 					//Rectification du moyenTransp
+					ligneSplit[3].pop_back(); // on retire le dernier carac
 					ligneSplit[3].pop_back(); // on retire le dernier carac
 
 
