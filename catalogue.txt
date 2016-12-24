@@ -1,4 +1,4 @@
 TC
-TS aaa zzz eee
-TS zzz rrr ttt
+TS Paris Toulouse Bus
+TS Toulouse Lyon Train
 /TC

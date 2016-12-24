@@ -310,16 +310,16 @@ void Catalogue::Sauvegarder()
         {
              for(int i = 0; i < tabCata->getCardActu(); i++)
              {
-							 tabCata->getCaseTab(i)->SauvegarderTraj(fichier);
-			 			 }
+				 tabCata->getCaseTab(i)->SauvegarderTraj(fichier);
+			 }
 
             fichier.close();
         }
         else
         {
             cerr << "Impossible d'ouvrir le fichier !" << endl;
-						cerr << "Sauvegarde échouée" << endl;
-				}
+			cerr << "Sauvegarde échouée" << endl;
+		}
 }
 
 void Catalogue::Lecture()
@@ -333,16 +333,16 @@ void Catalogue::Lecture()
            while(getline(fichier, ligne))  // tant que l'on peut mettre la ligne dans "contenu"
 
 					 {
-							cout << "ligne" <<endl;
-							cout << ligne <<endl;
-							cout << ligne.at(1) <<endl;
+							//cout << "ligne" <<endl;
+							//cout << ligne <<endl;
+							//cout << ligne.at(1) <<endl;
 
 							if(ligne.at(1) == 'S')// Si c'est un TS
 							{
 								ligneSplit = split(ligne);
 
 								//Rectification du moyenTransp
-								ligneSplit[3].pop_back(); // on retire le dernier carac
+								ligneSplit[3] = ligneSplit[3].substr(0, ligneSplit[3].length() - 1); // on retire le dernier carac
 
 								TrajetSimple * monTS = new TrajetSimple(ligneSplit[1].c_str(),ligneSplit[2].c_str(),ligneSplit[3].c_str());
 
@@ -353,37 +353,35 @@ void Catalogue::Lecture()
 
 			        else if(ligne.at(1) == 'C')// Si c'est un TC
 			        {
-
+						
 // PROB ICI
-									TrajetCompose * monTC = new TrajetCompose();
+						TrajetCompose * monTC = new TrajetCompose();
 
-										while(ligne.compare("TC/"))
-										{
-											getline(fichier, ligne);
+						while(true)
+						{
+							//cout << ligne.compare("TC/") << endl;
+							getline(fichier, ligne);
+							if(ligne[0] == '/')
+							{break;}
+							ligneSplit = split(ligne);
+							
+							//Rectification du moyenTransp
+							ligneSplit[3] = ligneSplit[3].substr(0, ligneSplit[3].length() - 1); // on retire le dernier carac
 
-											ligneSplit = split(ligne);
+							TrajetSimple * monTS = new TrajetSimple(ligneSplit[1].c_str(),ligneSplit[2].c_str(),ligneSplit[3].c_str());
+							monTS->Afficher();
+							monTC->Ajouter(monTS);
 
-											//Rectification du moyenTransp
-											ligneSplit[3].pop_back(); // on retire le dernier carac
+							delete monTS;
+						}
 
-											TrajetSimple * monTS = new TrajetSimple(ligneSplit[1].c_str(),ligneSplit[2].c_str(),ligneSplit[3].c_str());
-
-											monTC->Ajouter(monTS);
-
-											delete monTS;
-										}
-
-										Ajouter(monTC);
-
-										delete monTC;
-
-
-							}
-
-							else
-							{
-								cerr << "ERREUR : fichier corrompu" << endl;
-							}
+							Ajouter(monTC);
+							delete monTC;
+					}
+					else
+					{
+						cerr << "ERREUR : fichier corrompu" << endl;
+					}
 
 					}
 
@@ -405,7 +403,7 @@ vector<string> Catalogue::split(string s)
 
 	vector<string> sSplit;
 
-	for(int i =0; i < s.length() ; i++)
+	for(unsigned int i =0; i < s.length() ; i++)
 	{
 		// SUBSTRING( int posInitiale, LONGUEUR);
 
